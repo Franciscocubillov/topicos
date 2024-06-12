@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .navbar {
+            background-color: #6d42d5;
+            color: white;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+        }
+        .navbar a, .navbar button {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            background-color: #6d42d5;
+            border: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .navbar button:hover, .navbar a:hover {
+            background-color: #5a35b8;
+        }
+        .navbar form {
+            display: inline;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+        .posts-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+        .post {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .post-header img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .post-header h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .post-actions button {
+            background-color: #6d42d5;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+        .post-actions button:hover {
+            background-color: #5a35b8;
+        }
+        .back-link {
+            color: #6d42d5;
+            text-decoration: none;
+            margin-top: 20px;
+            display: block;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        form {
+            margin-top: 10px;
+        }
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .comments {
+            margin-top: 20px;
+        }
+        .comment {
+            background-color: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('create_post') }}">Crear Publicación</a>
+        <a href="{{ url_for('profile') }}">Perfil</a>
+        <a href="{{ url_for('search') }}">Buscar</a>
+        <a href="{{ url_for('view_messages', user_id=current_user.id) }}">Mensajes</a>
+        <a href="{{ url_for('feed') }}">Feed</a>
+        <button onclick="window.location.href='{{ url_for(notifications) }}'">🔔 Notificaciones</button>
+        <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
+            <button type="submit" class="logout">Cerrar Sesión</button>
+        </form>
+    </div>
+    <h1>Últimas Publicaciones</h1>
+    <div class="posts-container">
+        {% for post in posts %}
+            <div class="post">
+                <div class="post-header">
+                    <img src="{{ url_for('static', filename='profiles/' + post.user.profile_picture) }}" alt="Imagen de perfil" style="width: 50px; height: 50px;">
+                    <h2>{{ post.user.username }}</h2>
+                </div>
+                <p>{{ post.content }}</p>
+                {% if post.image %}
+                    <img src="{{ url_for('static', filename='profiles/' + post.image) }}" alt="Imagen de la publicación">
+                {% endif %}
+                <div class="post-actions">
+                    <button>Me gusta</button>
+                    <button>Comentar</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

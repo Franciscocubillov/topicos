@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed Personalizado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #6d42d5;
+            color: white;
+            padding: 15px;
+            width: 100%;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+        .post {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .post h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+        .post p {
+            margin: 5px 0;
+        }
+        .post a, .post button {
+            color: #6d42d5;
+            text-decoration: none;
+            display: inline-block;
+            background-color: #eaeaea;
+            padding: 5px 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .post a:hover, .post button:hover {
+            text-decoration: underline;
+        }
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .back-link {
+            color: #6d42d5;
+            text-decoration: none;
+            margin-top: 20px;
+            display: block;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        form {
+            margin-top: 10px;
+        }
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .comments {
+            margin-top: 20px;
+        }
+        .comment {
+            background-color: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Feed Personalizado</h1>
+    </header>
+    <div class="container">
+        {% for post in posts %}
+            <div class="post">
+                <h2>{{ post.user.username }}</h2>
+                <p>{{ post.content }}</p>
+                {% if post.image %}
+                    <img src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="Imagen de la Publicación">
+                {% endif %}
+                <!-- Botón para dar "me gusta" -->
+                <form action="{{ url_for('like_post', post_id=post.id) }}" method="post">
+                    <button type="submit">Me Gusta ({{ post.likes|length }})</button>
+                </form>
+                <!-- Formulario para agregar un comentario -->
+                <form action="{{ url_for('add_comment', post_id=post.id) }}" method="post">
+                    <textarea name="content" placeholder="Escribe un comentario..." required></textarea>
+                    <button type="submit">Comentar</button>
+                </form>
+                <!-- Lista de comentarios -->
+                <div class="comments">
+                    {% for comment in post.comments %}
+                        <div class="comment">
+                            <strong>{{ comment.author.username }}:</strong> {{ comment.content }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        <a href="{{ url_for('home') }}" class="back-link">Regresar a Inicio</a>
+    </div>
+</body>
+</html>

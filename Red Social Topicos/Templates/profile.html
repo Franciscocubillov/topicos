@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil | Red Social</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header, footer {
+            background-color: #6d42d5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1, footer p {
+            margin: 0;
+        }
+        .container {
+            flex: 1;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1, h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        nav {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+        }
+        nav a, nav form button {
+            display: inline-block;
+            background-color: #6d42d5;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        nav a:hover, nav form button:hover {
+            background-color: #5739b4;
+        }
+        .profile-pic-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .profile-pic {
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Red Social</h1>
+    </header>
+
+    <div class="container">
+        <h1>Perfil de {{ user.username }}</h1>
+        <div class="profile-pic-container">
+            <img src="{{ url_for('static', filename='uploads/' + (user.profile_picture or 'default.jpg')) }}" alt="Foto de perfil" class="profile-pic">
+        </div>
+        <p><strong>Nombre Completo:</strong> {{ user.fullname or 'No disponible' }}</p>
+        <p><strong>Biografía:</strong> {{ user.bio or 'No disponible' }}</p>
+        <p><strong>Género:</strong> {{ user.gender or 'No especificado' }}</p>
+        <p><strong>Fecha de Nacimiento:</strong> 
+            {% if user.dob %}
+                {{ user.dob.strftime('%Y-%m-%d') }}
+            {% else %}
+                No disponible
+            {% endif %}
+        </p>
+        <p><strong>Teléfono:</strong> {{ user.phone or 'No disponible' }}</p>
+        <nav>
+            <a href="{{ url_for('edit_profile') }}">Editar Perfil</a>
+            <a href="{{ url_for('home') }}">Inicio</a>
+            <form action="{{ url_for('logout') }}" method="post">
+                <button type="submit">Cerrar Sesión</button>
+            </form>
+        </nav>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Red Social</p>
+    </footer>
+</body>
+</html>

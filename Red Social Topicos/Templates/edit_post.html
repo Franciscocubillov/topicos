@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Publicación</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        button, a {
+            display: inline-block;
+            background-color: #6d42d5;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Editar Publicación</h2>
+
+        <form method="post" action="{{ url_for('edit_post', post_id=post.id) }}">
+            <label for="content">Contenido:</label>
+            <textarea id="content" name="content" rows="4" cols="50">{{ post.content }}</textarea><br>
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+
+        <a href="{{ url_for('home') }}">Cancelar</a>
+    </div>
+</body>
+</html>

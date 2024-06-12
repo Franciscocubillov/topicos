@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Notificaciones | Red Social</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header, footer {
+            background-color: #4267B2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        header h1, footer p {
+            margin: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .notification {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .notification p {
+            margin: 0;
+        }
+        .notification .date {
+            font-size: 0.9em;
+            color: #888;
+        }
+        .notification.unread {
+            background-color: #eaf3ff;
+        }
+        .notification-button {
+            position: relative;
+            display: inline-block;
+        }
+        .notification-button button {
+            background-color: #4267B2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .notification-button button:hover {
+            background-color: #365899;
+        }
+        .notification-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            z-index: 1;
+            width: 300px;
+            right: 0;
+        }
+        .notification-content .notification {
+            border-bottom: 1px solid #ddd;
+        }
+        .notification-content .notification:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Red Social</h1>
+        <div class="notification-button">
+            <button onclick="toggleNotifications()">Notificaciones</button>
+            <div class="notification-content" id="notificationContent">
+                {% for notification in notifications %}
+                    <div class="notification {% if not notification.leida %}unread{% endif %}">
+                        <p>{{ notification.descripcion }}</p>
+                        <p class="date">{{ notification.fecha_notificacion }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Contenido Principal</h2>
+        <p>Este es el contenido principal de la página.</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Red Social</p>
+    </footer>
+
+    <script>
+        function toggleNotifications() {
+            var content = document.getElementById('notificationContent');
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.notification-button button')) {
+                var dropdowns = document.getElementsByClassName("notification-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === "block") {
+                        openDropdown.style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

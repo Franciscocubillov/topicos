@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro | Red Social</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        header, footer {
+            background-color: #4267B2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        header h1, footer p {
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4267B2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #365899;
+        }
+        .link {
+            color: #4267B2;
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Registro en Red Social</h1>
+    </header>
+
+    <div class="container">
+        <form action="{{ url_for('register') }}" method="POST">
+            <input type="text" name="username" placeholder="Nombre de usuario" required>
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="text" name="fullname" placeholder="Nombre completo">
+            <textarea name="bio" placeholder="Biografía"></textarea>
+            <select name="gender" required onchange="toggleOtherGenderInput(this)">
+                <option value="male">Masculino</option>
+                <option value="female">Femenino</option>
+                <option value="other">Otro</option>
+            </select>
+            <input type="text" name="other_gender" id="other_gender" placeholder="Especifica tu género" style="display: none;">
+            <input type="date" name="dob" required>
+            <input type="tel" name="phone" placeholder="Número de teléfono">
+            <button type="submit">Registrarse</button>
+        </form>
+        <p>¿Ya tienes cuenta? <a href="{{ url_for('login') }}" class="link">Inicia sesión</a></p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Red Social</p>
+    </footer>
+
+    <script>
+        function toggleOtherGenderInput(select) {
+            var otherGenderInput = document.getElementById('other_gender');
+            if (select.value === 'other') {
+                otherGenderInput.style.display = 'block';
+            } else {
+                otherGenderInput.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

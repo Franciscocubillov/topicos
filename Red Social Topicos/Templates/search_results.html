@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Búsqueda - Red Social</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .result {
+            text-align: left;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        a.button {
+            display: inline-block;
+            background-color: #ff7f00;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Resultados de Búsqueda para "{{ query }}"</h2>
+
+        <h3>Usuarios Encontrados</h3>
+        {% if users %}
+            {% for user in users %}
+                <div class="result">
+                    <strong>{{ user.username }}</strong> ({{ user.email }})
+                    <a href="{{ url_for('profile', user_id=user.id) }}" class="button">Ver Perfil</a>
+                    {% if current_user.is_following(user) %}
+                        <a href="{{ url_for('unfollow', user_id=user.id) }}" class="button">Dejar de Seguir</a>
+                    {% else %}
+                        <a href="{{ url_for('follow', user_id=user.id) }}" class="button">Seguir</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No se encontraron usuarios</p>
+        {% endif %}
+
+        <h3>Publicaciones Encontradas</h3>
+        {% if posts %}
+            {% for post in posts %}
+                <div class="result">
+                    <strong>{{ post.user.username }}</strong>: {{ post.content }}
+                    <small>{{ post.created_at }}</small>
+                    <a href="{{ url_for('view_post', post_id=post.id) }}" class="button">Ver Publicación</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No se encontraron publicaciones</p>
+        {% endif %}
+
+        <a href="{{ url_for('search') }}" class="button">Nueva Búsqueda</a>
+        <a href="{{ url_for('home') }}" class="button">Volver a Inicio</a>
+    </div>
+</body>
+</html>
